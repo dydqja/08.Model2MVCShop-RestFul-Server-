@@ -1,5 +1,6 @@
 package com.model2.mvc.web.user;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,10 +34,26 @@ public class UserRestController {
 	@Qualifier("userServiceImpl")
 	private UserService userService;
 	//setter Method 구현 않음
-		
+	
+	
 	public UserRestController(){
 		System.out.println(this.getClass());
 	}
+	/*
+	@RequestMapping( value="json/addUser", method=RequestMethod.POST)
+	public String addUser(@RequestBody User user) throws Exception {
+		
+		System.out.println("[From Client Data]");
+		
+		System.out.println("1:"+user);
+		
+		userService.addUser(user);	
+		
+		
+		return null;
+	}
+	
+	
 	
 	@RequestMapping( value="json/getUser/{userId}", method=RequestMethod.GET )
 	public User getUser( @PathVariable String userId ) throws Exception{
@@ -61,5 +78,30 @@ public class UserRestController {
 		}
 		
 		return dbUser;
-	}
+	} */
+	
+	//================================================================//
+	//                    08 Repector 추가부분 
+	// 2.POST방식 JsonSimple => getUserTest (23.02.28) ing
+	//						 => map 으로 받기
+	//================================================================//
+	
+	@RequestMapping(value = "json/getUser/{value}", method = RequestMethod.POST)
+	public Map getUser(@PathVariable String value) throws Exception {
+		
+		System.out.println("[From Client Data]");
+		System.out.println(value);		
+				
+		//Business Logic
+		System.out.println("[To Client Data]");
+		User ReturnUser = userService.getUser(value);
+		System.out.println(ReturnUser);	
+		
+		Map map = new HashMap();
+		map.put("ReturnUser", ReturnUser);
+		
+		return map;
+		
+	}	
+	
 }
